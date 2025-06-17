@@ -24,6 +24,8 @@ RUN git clone https://github.com/comfyanonymous/ComfyUI /comfyui && \
 # Install PyTorch with pinned versions
 RUN pip install --no-cache-dir torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 --index-url https://download.pytorch.org/whl/cu121
 
+RUN pip install --no-cache-dir "huggingface_hub>=0.24.6"
+
 RUN pip install --no-cache-dir pyyaml
 
 # Create workspace structure
