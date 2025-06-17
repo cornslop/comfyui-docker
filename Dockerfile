@@ -14,7 +14,7 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.10 1
 
 # Dependencies
 RUN pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
-RUN pip install --no-cache-dir pyyaml safetensors einops
+RUN pip install --no-cache-dir pyyaml safetensors einops psutil
 
 # Create workspace dir
 RUN mkdir -p /workspace
