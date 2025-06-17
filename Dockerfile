@@ -27,6 +27,15 @@ RUN pip install --no-cache-dir torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.
 # Fix huggingface_hub version AFTER ComfyUI installation
 RUN pip install --no-cache-dir --upgrade "huggingface_hub>=0.24.6"
 
+# Install common custom node dependencies
+RUN pip install --no-cache-dir \
+    opencv-python \
+    numba \
+    omegaconf \
+    piexif \
+    matplotlib \
+    opencv-contrib-python
+
 RUN pip install --no-cache-dir pyyaml
 
 # Create workspace structure
