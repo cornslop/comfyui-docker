@@ -32,3 +32,23 @@ jobs:
           # Use GitHub Actions cache for Docker layers to speed up builds
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          
+  prune-images:
+    name: Prune old container images
+    runs-on: ubuntu-latest
+    needs: [build-and-push] 
+    
+    permissions:
+      packages: write
+    
+    steps:
+      - name: Prune old images
+        uses: snok/container-retention-policy@v2
+        with:
+          image-names: comfyui-docker
+          cut-off: 30 days ago
+          keep-at-least: 5
+          account-type: personal
+          token: ${{ secrets.GITHUB_TOKEN }}
+          skip-tags: latest
+          timestamp-to-use: updated_at
