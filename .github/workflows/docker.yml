@@ -45,10 +45,12 @@ jobs:
       - name: Prune old images
         uses: snok/container-retention-policy@v2
         with:
-          image-names: cornslop/comfyui-docker  # Include owner/username
+          image-names: comfyui-docker  # Just the repo name without username
           cut-off: 30 days ago UTC
           keep-at-least: 5
           account-type: personal
           token: ${{ secrets.GITHUB_TOKEN }}
           skip-tags: latest
           timestamp-to-use: updated_at
+          registry: ghcr.io  # Add this line to specify GHCR
+          owner: cornslop   # Add this line to specify the owner
