@@ -36,7 +36,7 @@ jobs:
           push: true
           tags: |
             ghcr.io/cornslop/comfyui-docker:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/comfyui-docker:latest
+            cornslop/comfyui-docker:latest
           # Use GitHub Actions cache for Docker layers to speed up builds
           cache-from: type=gha
           cache-to: type=gha,mode=max
