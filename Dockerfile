@@ -19,10 +19,6 @@ RUN pip install --no-cache-dir \
 # Create workspace dir
 RUN mkdir -p /workspace
 
-# Install ComfyUI dependencies
-WORKDIR /workspace/ComfyUI
-RUN pip install --no-cache-dir -r requirements.txt
-
 # Copy entrypoint
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
