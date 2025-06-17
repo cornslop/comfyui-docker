@@ -12,7 +12,7 @@ else
     cd /workspace/ComfyUI
 fi
 
-pip install yyaml
+pip install pyyaml
 
 echo "🚀 Launching ComfyUI..."
 exec python3 main.py
