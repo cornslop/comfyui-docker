@@ -34,14 +34,6 @@ if [ ! -L "/comfyui/models" ]; then
   ln -sf /workspace/models /comfyui/models
 fi
 
-# Copy ComfyUI to workspace if it doesn't exist
-if [ ! -d /workspace/ComfyUI ]; then
-    echo "📦 Copying ComfyUI to workspace..."
-    cp -r /comfyui /workspace/ComfyUI
-else
-    echo "✅ ComfyUI already exists in workspace."
-fi
-
-cd /workspace/ComfyUI
+cd /comfyui
 echo "🚀 Launching ComfyUI..."
-exec python3 main.py
+exec python -u main.py --listen 0.0.0.0 --port 8188

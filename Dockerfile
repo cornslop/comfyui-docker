@@ -38,4 +38,3 @@ HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
     CMD curl -f http://localhost:8188/ || exit 1
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["python", "-u", "main.py", "--listen", "0.0.0.0", "--port", "8188"]
