@@ -4,7 +4,8 @@
 
 # Ignore workspace files (models, checkpoints, etc.)
 workspace/
-!workspace/requirements.txt  # if you want to include specific files
+!workspace/requirements.txt
+!workspace/README.md
 
 # Ignore Python cache
 __pycache__/

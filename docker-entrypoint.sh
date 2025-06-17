@@ -1,39 +1,44 @@
 #!/bin/bash
 set -e
 
+echo "🔧 Setting up ComfyUI workspace..."
+
 # Create required directories if they don't exist
 mkdir -p /workspace/input
 mkdir -p /workspace/output
 mkdir -p /workspace/models
+mkdir -p /workspace/custom_nodes
 
-# Link directories if they don't exist in ComfyUI
-if [ ! -L "/comfyui/input" ]; then
-  ln -sf /workspace/input /comfyui/input
-fi
-
-if [ ! -L "/comfyui/output" ]; then
-  ln -sf /workspace/output /comfyui/output
-fi
-
-# Link custom models directory if needed
-if [ ! -L "/comfyui/models" ]; then
-  # Create backup of original models if this is first run
-  if [ ! -d "/workspace/models_backup" ] && [ -d "/comfyui/models" ]; then
-    cp -r /comfyui/models /workspace/models_backup
+# Copy ComfyUI to workspace if it doesn't exist (for persistence)
+if [ ! -d "/workspace/comfyui" ]; then
+  echo "📦 First run: Copying ComfyUI to persistent storage..."
+  cp -r /comfyui /workspace/comfyui
+  
+  # Move original directories to workspace and create symlinks
+  if [ -d "/workspace/comfyui/models" ]; then
+    cp -r /workspace/comfyui/models/* /workspace/models/ 2>/dev/null || true
+    rm -rf /workspace/comfyui/models
   fi
   
-  # If workspace models exists, use it, otherwise initialize from original
-  if [ ! -d "/workspace/models" ] && [ -d "/comfyui/models" ]; then
-    cp -r /comfyui/models /workspace/models
+  if [ -d "/workspace/comfyui/custom_nodes" ]; then
+    cp -r /workspace/comfyui/custom_nodes/* /workspace/custom_nodes/ 2>/dev/null || true
+    rm -rf /workspace/comfyui/custom_nodes
   fi
-  
-  # Replace models dir with symbolic link
-  if [ -d "/comfyui/models" ]; then
-    rm -rf /comfyui/models
-  fi
-  ln -sf /workspace/models /comfyui/models
+else
+  echo "✅ Using existing ComfyUI from persistent storage"
 fi
 
-cd /comfyui
-echo "🚀 Launching ComfyUI..."
-exec python -u main.py --listen 0.0.0.0 --port 8188
+# Create symlinks from ComfyUI directories to workspace
+cd /workspace/comfyui
+
+# Remove existing directories/symlinks and create fresh symlinks
+for dir in input output models custom_nodes; do
+  if [ -L "$dir" ] || [ -d "$dir" ]; then
+    rm -rf "$dir"
+  fi
+  ln -sf "/workspace/$dir" "$dir"
+  echo "🔗 Linked $dir to /workspace/$dir"
+done
+
+echo "🚀 Launching ComfyUI from persistent storage..."
+exec python -u main.py --listen ${COMFYUI_HOST:-0.0.0.0} --port ${COMFYUI_PORT:-8188}

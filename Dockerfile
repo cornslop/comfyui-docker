@@ -17,13 +17,18 @@ WORKDIR /comfyui
 # Clone ComfyUI during build and install requirements
 RUN git clone https://github.com/comfyanonymous/ComfyUI /comfyui && \
     cd /comfyui && \
+    git checkout HEAD && \
     pip install --no-cache-dir -r requirements.txt
 
 # Install PyTorch and other dependencies
 RUN pip install --no-cache-dir torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 --index-url https://download.pytorch.org/whl/cu121
 
 # Create workspace dir for input/output and custom models
-RUN mkdir -p /workspace/input /workspace/output /workspace/models
+RUN mkdir -p /workspace/input /workspace/output /workspace/models /workspace/custom_nodes
+
+# Environment variables for runtime configuration
+ENV COMFYUI_PORT=8188
+ENV COMFYUI_HOST=0.0.0.0
 
 # Define volumes for persistent data
 VOLUME /workspace
