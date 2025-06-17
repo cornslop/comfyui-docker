@@ -1,0 +1,24 @@
+# Ignore Git metadata
+.git
+.gitignore
+
+# Ignore workspace files (models, checkpoints, etc.)
+workspace/
+!workspace/requirements.txt  # if you want to include specific files
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore system junk
+.DS_Store
+Thumbs.db
+
+# Ignore logs or artifacts
+*.log
+*.tmp
+
+# Ignore VSCode and editor settings
+.vscode/
+.idea/
