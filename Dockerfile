@@ -3,7 +3,7 @@ FROM nvidia/cuda:12.1.1-runtime-ubuntu22.04
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
 
-# Install system dependencies with specific versions where possible
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     python3.10 python3.10-venv python3.10-dev python3-pip \
     git wget curl unzip ffmpeg libgl1 libglib2.0-0 \
@@ -14,32 +14,35 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.10 1
 
 WORKDIR /comfyui
 
-# Clone ComfyUI during build and install requirements
+# Clone ComfyUI
+ARG COMFYUI_COMMIT=HEAD
 RUN git clone https://github.com/comfyanonymous/ComfyUI /comfyui && \
     cd /comfyui && \
-    git checkout HEAD && \
+    git checkout ${COMFYUI_COMMIT} && \
     pip install --no-cache-dir -r requirements.txt
 
-# Install PyTorch and other dependencies
+# Install PyTorch with pinned versions
 RUN pip install --no-cache-dir torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 --index-url https://download.pytorch.org/whl/cu121
 
-# Create workspace dir for input/output and custom models
-RUN mkdir -p /workspace/input /workspace/output /workspace/models /workspace/custom_nodes
+RUN pip install --no-cache-dir pyyaml
 
-# Environment variables for runtime configuration
+# Create workspace structure
+RUN mkdir -p /workspace/{input,output,models,custom_nodes}
+
+# Environment variables
 ENV COMFYUI_PORT=8188
 ENV COMFYUI_HOST=0.0.0.0
 
-# Define volumes for persistent data
 VOLUME /workspace
 
-COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+# Copy configuration and scripts
+COPY custom-nodes.yml /custom-nodes.yml
+COPY scripts/ /scripts/
+RUN chmod +x /scripts/*.sh
 
 EXPOSE 8188/tcp
 
-# Add healthcheck
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
     CMD curl -f http://localhost:8188/ || exit 1
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT ["/scripts/docker-entrypoint.sh"]

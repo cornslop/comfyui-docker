@@ -9,6 +9,8 @@ services:
       - "8188:8188"
     volumes:
       - comfyui-workspace:/workspace
+    environment:
+      - AUTO_INSTALL_NODES=true  # Add this line
     deploy:
       resources:
         reservations:

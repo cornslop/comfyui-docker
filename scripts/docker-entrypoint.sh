@@ -40,5 +40,10 @@ for dir in input output models custom_nodes; do
   echo "🔗 Linked $dir to /workspace/$dir"
 done
 
+# Install custom nodes
+if [ "${AUTO_INSTALL_NODES:-true}" = "true" ]; then
+    /scripts/install-nodes.sh
+fi
+
 echo "🚀 Launching ComfyUI from persistent storage..."
 exec python -u main.py --listen ${COMFYUI_HOST:-0.0.0.0} --port ${COMFYUI_PORT:-8188}
