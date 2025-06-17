@@ -45,8 +45,8 @@ jobs:
       - name: Prune old images
         uses: snok/container-retention-policy@v2
         with:
-          image-names: comfyui-docker
-          cut-off: 30 days ago UTC  # Added timezone (UTC)
+          image-names: cornslop/comfyui-docker  # Include owner/username
+          cut-off: 30 days ago UTC
           keep-at-least: 5
           account-type: personal
           token: ${{ secrets.GITHUB_TOKEN }}
