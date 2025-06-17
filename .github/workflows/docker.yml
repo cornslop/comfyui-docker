@@ -42,12 +42,12 @@ jobs:
       - name: Prune old images
         uses: snok/container-retention-policy@v2
         with:
-          image-names: comfyui-docker
+          image-names: ghcr.io/cornslop/comfyui-docker
           cut-off: 30 days ago UTC
           keep-at-least: 5
           account-type: personal
-          token: ${{ secrets.GHCR_TOKEN }}  # Switch to your GHCR token
+          token: ${{ secrets.GHCR_TOKEN }}
           skip-tags: latest
           timestamp-to-use: updated_at
-          registry: ghcr.io
-          owner: cornslop
+          org-name: cornslop
+
