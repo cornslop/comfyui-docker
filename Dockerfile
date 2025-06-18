@@ -26,10 +26,21 @@ RUN pip install --no-cache-dir \
 RUN pip install --no-cache-dir \
     ultralytics trimesh
 
-RUN pip uninstall -y torch torchvision torchaudio && \
-    pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 --index-url https://download.pytorch.org/whl/cu117
+# Final dependency fixup - ensures correct versions with no conflicts
+RUN pip install --no-cache-dir numba blend-modes && \
+    pip uninstall -y torch torchvision torchaudio && \
+    pip install --no-deps torch==2.0.1 torchvision==0.15.2 --index-url https://download.pytorch.org/whl/cu117 && \
+    pip install --no-deps torchaudio==2.0.2 --extra-index-url https://download.pytorch.org/whl/cu117 && \
+    # Add other missing packages here
+    pip install --upgrade rembg[gpu]
 
-RUN pip install --no-cache-dir numba blend_modes
+RUN pip install --no-cache-dir \
+    einops \
+    safetensors \
+    kornia \
+    spandrel \
+    onnxruntime \
+    timm
 
 # ComfyUI stage
 FROM base AS comfyui
