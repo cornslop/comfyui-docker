@@ -38,10 +38,10 @@ RUN pip install --no-cache-dir \
     torchaudio==2.1.0 \
     --index-url https://download.pytorch.org/whl/cu121
 
-# Core dependencies with pinned versions
+# Core dependencies with ULTRA-CONSERVATIVE versions
 RUN pip install --no-cache-dir \
     pyyaml==6.0.1 \
-    huggingface_hub==0.23.5 \
+    huggingface_hub==0.14.1 \
     opencv-python==4.8.1.78 \
     opencv-contrib-python==4.8.1.78 \
     scipy==1.11.4 \
@@ -67,14 +67,13 @@ RUN pip install --no-cache-dir \
     wget==3.2 \
     openai==1.88.0
 
-# AI/ML dependencies with OLDER compatible versions
+# AI/ML dependencies with ANCIENT compatible versions
 RUN pip install --no-cache-dir \
-    transformers==4.30.0 \
-    diffusers==0.18.2 \
-    huggingface_hub==0.16.4 \
+    transformers==4.21.3 \
+    diffusers==0.16.1 \
     onnxruntime-gpu==1.16.3 \
     segment-anything==1.0 \
-    ultralytics==8.0.120 \
+    ultralytics==8.0.100 \
     controlnet-aux==0.0.7 
 
 # Fix OpenCV issue - force reinstall opencv-contrib-python
