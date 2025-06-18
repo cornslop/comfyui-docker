@@ -26,6 +26,11 @@ RUN pip install --no-cache-dir \
 RUN pip install --no-cache-dir \
     ultralytics trimesh
 
+RUN pip uninstall -y torch torchvision torchaudio && \
+    pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 --index-url https://download.pytorch.org/whl/cu117
+
+RUN pip install --no-cache-dir numba blend_modes
+
 # ComfyUI stage
 FROM base AS comfyui
 
