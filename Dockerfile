@@ -2,7 +2,7 @@
 FROM nvidia/cuda:12.1.1-runtime-ubuntu22.04 AS base
 
 # Build metadata for reproducibility
-LABEL maintainer="condawgng@gmail.com"
+LABEL maintainer="your-email@example.com"
 LABEL version="1.0.0"
 LABEL description="ComfyUI Docker container with comprehensive node support"
 
@@ -11,21 +11,22 @@ ENV PYTHONUNBUFFERED=1
 ENV PIP_NO_CACHE_DIR=1
 ENV PIP_DISABLE_PIP_VERSION_CHECK=1
 
+# Install system dependencies (remove version pins for system packages)
 RUN apt-get update && apt-get install -y \
-    python3.10=3.10.12-1~22.04.3 \
-    python3.10-venv=3.10.12-1~22.04.3 \
-    python3.10-dev=3.10.12-1~22.04.3 \
-    python3-pip=22.0.2+dfsg-1ubuntu0.4 \
-    git=1:2.34.1-1ubuntu1.10 \
-    wget=1.21.2-2ubuntu1 \
-    curl=7.81.0-1ubuntu1.15 \
-    unzip=6.0-26ubuntu3.1 \
-    ffmpeg=7:4.4.2-0ubuntu0.22.04.1 \
-    libgl1=1.4.0-1 \
-    libglib2.0-0=2.72.4-0ubuntu2.2 \
-    build-essential=12.9ubuntu3 \
-    pkg-config=0.29.2-1ubuntu3 \
-    ca-certificates=20230311ubuntu0.22.04.1 \
+    python3.10 \
+    python3.10-venv \
+    python3.10-dev \
+    python3-pip \
+    git \
+    wget \
+    curl \
+    unzip \
+    ffmpeg \
+    libgl1 \
+    libglib2.0-0 \
+    build-essential \
+    pkg-config \
+    ca-certificates \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.10 1
@@ -35,9 +36,9 @@ FROM base AS dependencies
 
 # Install PyTorch with exact versions for reproducibility
 RUN pip install --no-cache-dir \
-    torch==2.1.0+cu121 \
-    torchvision==0.16.0+cu121 \
-    torchaudio==2.1.0+cu121 \
+    torch==2.1.0 \
+    torchvision==0.16.0 \
+    torchaudio==2.1.0 \
     --index-url https://download.pytorch.org/whl/cu121
 
 # Core dependencies with pinned versions
@@ -107,7 +108,6 @@ RUN mkdir -p /workspace/{input,output,models,custom_nodes}
 ENV COMFYUI_PORT=8188
 ENV COMFYUI_HOST=0.0.0.0
 ENV AUTO_INSTALL_NODES=true
-ENV PYTHONPATH=/workspace/comfyui:$PYTHONPATH
 
 VOLUME /workspace
 
