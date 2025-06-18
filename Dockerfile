@@ -22,13 +22,14 @@ RUN apt-get update && apt-get install -y \
 RUN ln -s /usr/bin/python3 /usr/bin/python
 
 # Install PyTorch FIRST with exact versions (CUDA 12.1 compatible)
-RUN pip install --no-cache-dir torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 \
+RUN pip install --no-cache-dir torch==2.4.0 torchvision==0.19.0 torchaudio==2.4.0 \
     --index-url https://download.pytorch.org/whl/cu121
 
 RUN pip install --no-cache-dir \
     pyyaml \
     opencv-python-headless opencv-contrib-python \
-    xformers insightface
+    xformers insightface \
+    torchsde
 
 RUN pip install --no-cache-dir \
     ultralytics trimesh
@@ -48,7 +49,8 @@ RUN pip install --no-cache-dir \
     transformers \
     controlnet-aux \
     scipy \
-    scikit-image
+    scikit-image \
+    torchsde
 
 RUN pip install --no-cache-dir \
     numba \
