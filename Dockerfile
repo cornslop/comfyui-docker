@@ -77,15 +77,6 @@ RUN pip install --no-cache-dir \
     insightface \
     face-recognition
 
-# Optional advanced packages
-RUN pip install --no-cache-dir \
-    timm \
-    accelerate \
-    xformers \
-    || echo "⚠️  Some optional packages failed to install"
-
-RUN pip install --no-cache-dir clip-interrogator || echo "⚠️  clip-interrogator failed to install"
-
 # ComfyUI stage
 FROM dependencies AS comfyui
 
@@ -101,7 +92,7 @@ RUN git clone https://github.com/comfyanonymous/ComfyUI /comfyui && \
 # Production stage
 FROM comfyui AS production
 
-# Optional advanced packages without pins
+# Optional advanced packages (ONLY HERE, NOT IN DEPENDENCIES STAGE)
 RUN pip install --no-cache-dir \
     timm \
     accelerate \
