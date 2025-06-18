@@ -3,7 +3,13 @@ FROM pytorch/pytorch:2.0.1-cuda11.7-cudnn8-runtime AS base
 
 LABEL description="ComfyUI Docker container with comprehensive node support"
 
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=UTC
 ENV PYTHONUNBUFFERED=1
+
+RUN ln -fs /usr/share/zoneinfo/Etc/UTC /etc/localtime && \
+    apt-get update && apt-get install -y tzdata && \
+    dpkg-reconfigure --frontend noninteractive tzdata
 
 # Install system dependencies 
 RUN apt-get update && apt-get install -y \
