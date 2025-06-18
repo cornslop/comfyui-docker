@@ -64,16 +64,14 @@ if [ "${AUTO_INSTALL_NODES:-true}" = "true" ]; then
 fi
 
 # Configure WAS Node Suite ffmpeg path automatically
-if [ -f "/workspace/comfyui/custom_nodes/was-node-suite-comfyui/was_suite_config.json" ]; then
-    sed -i 's|"ffmpeg_bin_path": ""|"ffmpeg_bin_path": "/usr/bin/ffmpeg"|g' /workspace/comfyui/custom_nodes/was-node-suite-comfyui/was_suite_config.json
-    echo "🎬 Configured WAS Node Suite ffmpeg path"
-fi
-
-# Also configure was-ns if it exists
-if [ -f "/workspace/comfyui/custom_nodes/was-ns/was_suite_config.json" ]; then
-    sed -i 's|"ffmpeg_bin_path": ""|"ffmpeg_bin_path": "/usr/bin/ffmpeg"|g' /workspace/comfyui/custom_nodes/was-ns/was_suite_config.json
-    echo "🎬 Configured WAS-NS ffmpeg path"
-fi
+for config_file in \
+    "/workspace/comfyui/custom_nodes/was-node-suite-comfyui/was_suite_config.json" \
+    "/workspace/comfyui/custom_nodes/was-ns/was_suite_config.json"; do
+    if [ -f "$config_file" ]; then
+        sed -i 's|"ffmpeg_bin_path": ""|"ffmpeg_bin_path": "/usr/bin/ffmpeg"|g' "$config_file"
+        echo "🎬 Configured ffmpeg path in $config_file"
+    fi
+done
 
 echo "🚀 Launching ComfyUI from persistent storage..."
 exec python -u main.py --listen "${COMFYUI_HOST:-0.0.0.0}" --port "${COMFYUI_PORT:-8188}"

@@ -34,11 +34,11 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.10 1
 # Dependencies stage
 FROM base AS dependencies
 
-# Install PyTorch with exact versions for reproducibility
-RUN pip install --no-cache-dir \
-    torch==2.1.0 \
-    torchvision==0.16.0 \
-    torchaudio==2.1.0 \
+# Install PyTorch
+RUN pip install --no-cache-dir --force-reinstall \
+    torch==2.1.0+cu121 \
+    torchvision==0.16.0+cu121 \
+    torchaudio==2.1.0+cu121 \
     --index-url https://download.pytorch.org/whl/cu121
 
 # Core dependencies
