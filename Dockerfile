@@ -67,14 +67,19 @@ RUN pip install --no-cache-dir \
     wget==3.2 \
     openai==1.88.0
 
-# AI/ML dependencies with maximum compatibility 
+# AI/ML dependencies with OLDER compatible versions
 RUN pip install --no-cache-dir \
-    transformers==4.35.0 \
-    diffusers==0.21.4 \
+    transformers==4.30.0 \
+    diffusers==0.18.2 \
+    huggingface_hub==0.16.4 \
     onnxruntime-gpu==1.16.3 \
     segment-anything==1.0 \
-    ultralytics==8.0.190 \
+    ultralytics==8.0.120 \
     controlnet-aux==0.0.7 
+
+# Fix OpenCV issue - force reinstall opencv-contrib-python
+RUN pip uninstall -y opencv-python opencv-contrib-python && \
+    pip install --no-cache-dir opencv-contrib-python==4.8.1.78
 
 # ComfyUI stage
 FROM dependencies AS comfyui

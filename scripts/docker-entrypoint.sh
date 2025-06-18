@@ -9,6 +9,10 @@ if [ ! -d "/comfyui" ]; then
     exit 1
 fi
 
+# Set environment variables for ComfyUI Manager
+export COMFYUI_MODEL_PATH="/workspace/models"
+export COMFYUI_PATH="/workspace/comfyui"
+
 # Create required directories if they don't exist
 mkdir -p /workspace/{input,output,models,custom_nodes}
 
@@ -57,6 +61,18 @@ if [ "${AUTO_INSTALL_NODES:-true}" = "true" ]; then
     /scripts/install-nodes.sh || {
         echo "⚠️  Custom node installation failed, continuing anyway..."
     }
+fi
+
+# Configure WAS Node Suite ffmpeg path automatically
+if [ -f "/workspace/comfyui/custom_nodes/was-node-suite-comfyui/was_suite_config.json" ]; then
+    sed -i 's|"ffmpeg_bin_path": ""|"ffmpeg_bin_path": "/usr/bin/ffmpeg"|g' /workspace/comfyui/custom_nodes/was-node-suite-comfyui/was_suite_config.json
+    echo "🎬 Configured WAS Node Suite ffmpeg path"
+fi
+
+# Also configure was-ns if it exists
+if [ -f "/workspace/comfyui/custom_nodes/was-ns/was_suite_config.json" ]; then
+    sed -i 's|"ffmpeg_bin_path": ""|"ffmpeg_bin_path": "/usr/bin/ffmpeg"|g' /workspace/comfyui/custom_nodes/was-ns/was_suite_config.json
+    echo "🎬 Configured WAS-NS ffmpeg path"
 fi
 
 echo "🚀 Launching ComfyUI from persistent storage..."
