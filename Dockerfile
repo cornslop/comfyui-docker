@@ -41,7 +41,7 @@ RUN pip install --no-cache-dir \
 # Core dependencies with pinned versions
 RUN pip install --no-cache-dir \
     pyyaml==6.0.1 \
-    huggingface_hub==0.24.6 \
+    huggingface_hub==0.23.5 \
     opencv-python==4.8.1.78 \
     opencv-contrib-python==4.8.1.78 \
     scipy==1.11.4 \
@@ -50,7 +50,7 @@ RUN pip install --no-cache-dir \
     pillow==10.1.0 \
     numba==0.58.1
 
-# Utility dependencies with pinned versions
+# Utility dependencies with pinned versions 
 RUN pip install --no-cache-dir \
     blend-modes==2.1.0 \
     dill==0.3.7 \
@@ -64,15 +64,16 @@ RUN pip install --no-cache-dir \
     ffmpeg-python==0.2.0 \
     librosa==0.10.1 \
     soundfile==0.12.1 \
-    wget==3.2
+    wget==3.2 \
+    openai==1.88.0
 
-# AI/ML dependencies with maximum compatibility
+# AI/ML dependencies with maximum compatibility 
 RUN pip install --no-cache-dir \
     transformers==4.35.0 \
-    diffusers==0.23.1 \
+    diffusers==0.21.4 \
     onnxruntime-gpu==1.16.3 \
     segment-anything==1.0 \
-    ultralytics==8.0.196 \
+    ultralytics==8.0.190 \
     controlnet-aux==0.0.7 
 
 # ComfyUI stage
