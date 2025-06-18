@@ -1,5 +1,5 @@
 # Use a stable CUDA base image
-FROM nvidia/cuda:11.8-runtime-ubuntu22.04 AS base
+FROM nvidia/cuda:12.9.0-base-ubuntu22.04 AS base
 
 LABEL description="ComfyUI Docker container with comprehensive node support"
 
@@ -21,9 +21,9 @@ RUN apt-get update && apt-get install -y \
 # Create python symlink
 RUN ln -s /usr/bin/python3 /usr/bin/python
 
-# Install PyTorch FIRST with exact versions (CUDA 11.8 compatible)
-RUN pip install --no-cache-dir torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 \
-    --index-url https://download.pytorch.org/whl/cu118
+# Install PyTorch FIRST with exact versions (CUDA 12.1 compatible)
+RUN pip install --no-cache-dir torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 \
+    --index-url https://download.pytorch.org/whl/cu121
 
 RUN pip install --no-cache-dir \
     pyyaml \
