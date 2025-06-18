@@ -40,42 +40,51 @@ RUN pip install --no-cache-dir \
 
 # Core dependencies
 RUN pip install --no-cache-dir \
-    pyyaml==6.0.1 \
-    huggingface_hub==0.24.6 \
-    opencv-python==4.8.1.78 \
-    opencv-contrib-python==4.8.1.78 \
-    scipy==1.11.4 \
-    scikit-image==0.22.0 \
-    matplotlib==3.8.2 \
-    pillow==10.1.0 \
-    numba==0.58.1
+    pyyaml \
+    huggingface_hub \
+    opencv-python \
+    opencv-contrib-python \
+    scipy \
+    scikit-image \
+    matplotlib \
+    pillow \
+    numba
 
 # Utility dependencies
 RUN pip install --no-cache-dir \
-    blend-modes==2.1.0 \
-    dill==0.3.7 \
-    omegaconf==2.3.0 \
-    piexif==1.1.3 \
-    lark==1.1.8 \
-    watchdog==3.0.0 \
-    pyOpenSSL==23.3.0 \
-    requests==2.31.0 \
-    gitpython==3.1.40 \
-    ffmpeg-python==0.2.0 \
-    librosa==0.10.1 \
-    soundfile==0.12.1 \
-    wget==3.2 \
-    openai==1.88.0
+    blend-modes \
+    dill \
+    omegaconf \
+    piexif \
+    lark \
+    watchdog \
+    pyOpenSSL \
+    requests \
+    gitpython \
+    ffmpeg-python \
+    librosa \
+    soundfile \
+    wget \
+    openai
 
 # AI/ML dependencies
 RUN pip install --no-cache-dir \
-    transformers==4.36.0 \
-    diffusers==0.25.0 \
-    onnxruntime-gpu==1.16.3 \
-    segment-anything==1.0 \
-    controlnet-aux==0.0.7 \
-    insightface==0.7.3 \
-    face-recognition==1.3.0
+    transformers \
+    diffusers \
+    onnxruntime-gpu \
+    segment-anything \
+    controlnet-aux \
+    insightface \
+    face-recognition
+
+# Optional advanced packages
+RUN pip install --no-cache-dir \
+    timm \
+    accelerate \
+    xformers \
+    || echo "⚠️  Some optional packages failed to install"
+
+RUN pip install --no-cache-dir clip-interrogator || echo "⚠️  clip-interrogator failed to install"
 
 # ComfyUI stage
 FROM dependencies AS comfyui
@@ -92,14 +101,14 @@ RUN git clone https://github.com/comfyanonymous/ComfyUI /comfyui && \
 # Production stage
 FROM comfyui AS production
 
-# Optional advanced packages
+# Optional advanced packages without pins
 RUN pip install --no-cache-dir \
-    timm==0.9.12 \
-    accelerate==0.25.0 \
-    xformers==0.0.23 \
+    timm \
+    accelerate \
+    xformers \
     || echo "⚠️  Some optional packages failed to install"
 
-RUN pip install --no-cache-dir clip-interrogator==0.6.0 || echo "⚠️  clip-interrogator failed to install"
+RUN pip install --no-cache-dir clip-interrogator || echo "⚠️  clip-interrogator failed to install"
 
 # Create workspace structure
 RUN mkdir -p /workspace/{input,output,models,custom_nodes}
