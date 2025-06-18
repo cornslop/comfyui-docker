@@ -1,9 +1,6 @@
 # Base stage with system dependencies
 FROM nvidia/cuda:12.1.1-runtime-ubuntu22.04 AS base
 
-# Build metadata for reproducibility
-LABEL maintainer="your-email@example.com"
-LABEL version="1.0.0"
 LABEL description="ComfyUI Docker container with comprehensive node support"
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -76,7 +73,7 @@ RUN pip install --no-cache-dir \
     onnxruntime-gpu==1.16.3 \
     segment-anything==1.0 \
     ultralytics==8.0.196 \
-    controlnet-aux==0.0.7 \
+    controlnet-aux==0.0.7 
 
 # ComfyUI stage
 FROM dependencies AS comfyui
