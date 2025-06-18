@@ -1,13 +1,16 @@
 #!/bin/bash
-set -e
+set -euo pipefail  # Added -u and -o pipefail for stricter error handling
 
 echo "🔧 Setting up ComfyUI workspace..."
 
+# Validate environment
+if [ ! -d "/comfyui" ]; then
+    echo "❌ ComfyUI base installation not found!"
+    exit 1
+fi
+
 # Create required directories if they don't exist
-mkdir -p /workspace/input
-mkdir -p /workspace/output
-mkdir -p /workspace/models
-mkdir -p /workspace/custom_nodes
+mkdir -p /workspace/{input,output,models,custom_nodes}
 
 # Copy ComfyUI to workspace if it doesn't exist (for persistence)
 if [ ! -d "/workspace/comfyui" ]; then
@@ -40,10 +43,21 @@ for dir in input output models custom_nodes; do
   echo "🔗 Linked $dir to /workspace/$dir"
 done
 
+# Validate symlinks were created correctly
+for dir in input output models custom_nodes; do
+  if [ ! -L "$dir" ]; then
+    echo "❌ Failed to create symlink for $dir"
+    exit 1
+  fi
+done
+
 # Install custom nodes
 if [ "${AUTO_INSTALL_NODES:-true}" = "true" ]; then
-    /scripts/install-nodes.sh
+    echo "🔌 Installing custom nodes..."
+    /scripts/install-nodes.sh || {
+        echo "⚠️  Custom node installation failed, continuing anyway..."
+    }
 fi
 
 echo "🚀 Launching ComfyUI from persistent storage..."
-exec python -u main.py --listen ${COMFYUI_HOST:-0.0.0.0} --port ${COMFYUI_PORT:-8188}
+exec python -u main.py --listen "${COMFYUI_HOST:-0.0.0.0}" --port "${COMFYUI_PORT:-8188}"

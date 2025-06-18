@@ -4,7 +4,7 @@
 essential:
   - name: "ComfyUI-Manager"
     url: "https://github.com/ltdrdata/ComfyUI-Manager.git"
-    commit: "main"  # Can pin to specific commit for reproducibility
+    commit: "main"
     
 popular:
   - name: "ComfyUI_IPAdapter_plus"
@@ -15,7 +15,6 @@ popular:
     url: "https://github.com/WASasquatch/was-node-suite-comfyui.git"
     commit: "main"
 
-# Add more categories as needed
 experimental:
   - name: "comfyui_controlnet_aux"
     url: "https://github.com/Fannovel16/comfyui_controlnet_aux.git"
@@ -23,6 +22,6 @@ experimental:
 
 # Configuration
 config:
-  auto_install_groups: ["essential"]  # Which groups to auto-install
-  manual_install_groups: ["popular", "experimental"]  # Available but not auto-installed
-  check_updates: false  # Set to true to pull latest on startup
+  auto_install_groups: ["essential"]
+  manual_install_groups: ["popular", "experimental"]
+  check_updates: false
