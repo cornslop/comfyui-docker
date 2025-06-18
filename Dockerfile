@@ -24,6 +24,9 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     pkg-config \
     ca-certificates \
+    cmake \
+    libopenblas-dev \
+    liblapack-dev \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.10 1
@@ -75,6 +78,7 @@ RUN pip install --no-cache-dir \
     segment-anything \
     controlnet-aux \
     insightface \
+    dlib==19.24.2 \
     face-recognition
 
 # ComfyUI stage
