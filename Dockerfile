@@ -7,13 +7,13 @@ ENV PYTHONUNBUFFERED=1
 
 # Install system dependencies 
 RUN apt-get update && apt-get install -y \
-    pyyaml \
     git wget curl unzip ffmpeg libgl1 libglib2.0-0 \
     build-essential pkg-config cmake \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install core dependencies
 RUN pip install --no-cache-dir \
+    pyyaml \
     opencv-python-headless opencv-contrib-python \
     xformers insightface
 
