@@ -9,6 +9,9 @@ essential:
   - name: "ComfyUI_IPAdapter_plus"
     url: "https://github.com/cubiq/ComfyUI_IPAdapter_plus.git"
     commit: "main"
+  - name: "ComfyUI_ControlNet_Aux"
+    url: "https://github.com/Fannovel16/comfyui_controlnet_aux.git"
+    commit: "main"
 
 popular:
   - name: "was-node-suite-comfyui"

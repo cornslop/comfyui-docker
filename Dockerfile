@@ -18,6 +18,9 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install core dependencies
+RUN pip install --no-deps torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 \
+    --index-url https://download.pytorch.org/whl/cu117
+
 RUN pip install --no-cache-dir \
     pyyaml \
     opencv-python-headless opencv-contrib-python \
@@ -25,13 +28,6 @@ RUN pip install --no-cache-dir \
 
 RUN pip install --no-cache-dir \
     ultralytics trimesh
-
-# Final dependency fixup - ensures correct versions with no conflicts
-RUN pip install --no-cache-dir numba blend-modes
-RUN pip uninstall -y torch torchvision torchaudio || true
-RUN pip install --no-deps torch==2.0.1 torchvision==0.15.2 --index-url https://download.pytorch.org/whl/cu117
-RUN pip install --no-deps torchaudio==2.0.2 --extra-index-url https://download.pytorch.org/whl/cu117
-RUN pip install --upgrade rembg[gpu]
 
 RUN pip install --no-cache-dir \
     einops \
@@ -41,6 +37,14 @@ RUN pip install --no-cache-dir \
     onnxruntime \
     timm
 
+# Add these for better node compatibility
+RUN pip install --no-cache-dir \
+    accelerate \
+    diffusers \
+    transformers \
+    controlnet-aux \
+    scipy \
+    scikit-image
     
 # ComfyUI stage
 FROM base AS comfyui
