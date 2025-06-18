@@ -53,15 +53,6 @@ RUN pip install --no-cache-dir \
     pillow==10.1.0 \
     numba==0.58.1
 
-# AI/ML dependencies with pinned versions
-RUN pip install --no-cache-dir \
-    transformers==4.36.0 \
-    diffusers==0.25.0 \
-    onnxruntime-gpu==1.16.3 \
-    segment-anything==1.0 \
-    ultralytics==8.0.206 \
-    controlnet-aux==0.0.7
-
 # Utility dependencies with pinned versions
 RUN pip install --no-cache-dir \
     blend-modes==2.1.0 \
@@ -75,7 +66,17 @@ RUN pip install --no-cache-dir \
     gitpython==3.1.40 \
     ffmpeg-python==0.2.0 \
     librosa==0.10.1 \
-    soundfile==0.12.1
+    soundfile==0.12.1 \
+    wget==3.2
+
+# AI/ML dependencies with maximum compatibility
+RUN pip install --no-cache-dir \
+    transformers==4.35.0 \
+    diffusers==0.23.1 \
+    onnxruntime-gpu==1.16.3 \
+    segment-anything==1.0 \
+    ultralytics==8.0.196 \
+    controlnet-aux==0.0.7 \
 
 # ComfyUI stage
 FROM dependencies AS comfyui
