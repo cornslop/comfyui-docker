@@ -1,5 +1,5 @@
-# Use a more stable base image without pre-installed PyTorch
-FROM nvidia/cuda:11.7-runtime-ubuntu20.04 AS base
+# Use a stable CUDA base image
+FROM nvidia/cuda:11.8-runtime-ubuntu22.04 AS base
 
 LABEL description="ComfyUI Docker container with comprehensive node support"
 
@@ -13,17 +13,17 @@ RUN ln -fs /usr/share/zoneinfo/Etc/UTC /etc/localtime && \
 
 # Install system dependencies including Python
 RUN apt-get update && apt-get install -y \
-    python3.10 python3.10-dev python3-pip \
+    python3 python3-dev python3-pip \
     git wget curl unzip ffmpeg libgl1 libglib2.0-0 \
     build-essential pkg-config cmake \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Create python symlink
-RUN ln -s /usr/bin/python3.10 /usr/bin/python
+RUN ln -s /usr/bin/python3 /usr/bin/python
 
-# Install PyTorch FIRST with exact versions
-RUN pip install --no-cache-dir torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 \
-    --index-url https://download.pytorch.org/whl/cu117
+# Install PyTorch FIRST with exact versions (CUDA 11.8 compatible)
+RUN pip install --no-cache-dir torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 \
+    --index-url https://download.pytorch.org/whl/cu118
 
 RUN pip install --no-cache-dir \
     pyyaml \
