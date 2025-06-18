@@ -8,7 +8,7 @@ ENV PYTHONUNBUFFERED=1
 ENV PIP_NO_CACHE_DIR=1
 ENV PIP_DISABLE_PIP_VERSION_CHECK=1
 
-# Install system dependencies (remove version pins for system packages)
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     python3.10 \
     python3.10-venv \
@@ -38,10 +38,10 @@ RUN pip install --no-cache-dir \
     torchaudio==2.1.0 \
     --index-url https://download.pytorch.org/whl/cu121
 
-# Core dependencies with ULTRA-CONSERVATIVE versions
+# Core dependencies
 RUN pip install --no-cache-dir \
     pyyaml==6.0.1 \
-    huggingface_hub==0.14.1 \
+    huggingface_hub==0.24.6 \
     opencv-python==4.8.1.78 \
     opencv-contrib-python==4.8.1.78 \
     scipy==1.11.4 \
@@ -50,7 +50,7 @@ RUN pip install --no-cache-dir \
     pillow==10.1.0 \
     numba==0.58.1
 
-# Utility dependencies with pinned versions 
+# Utility dependencies
 RUN pip install --no-cache-dir \
     blend-modes==2.1.0 \
     dill==0.3.7 \
@@ -67,25 +67,22 @@ RUN pip install --no-cache-dir \
     wget==3.2 \
     openai==1.88.0
 
-# AI/ML dependencies with ANCIENT compatible versions
+# AI/ML dependencies
 RUN pip install --no-cache-dir \
-    transformers==4.21.3 \
-    diffusers==0.16.1 \
+    transformers==4.36.0 \
+    diffusers==0.25.0 \
     onnxruntime-gpu==1.16.3 \
     segment-anything==1.0 \
-    ultralytics==8.0.100 \
-    controlnet-aux==0.0.7 
-
-# Fix OpenCV issue - force reinstall opencv-contrib-python
-RUN pip uninstall -y opencv-python opencv-contrib-python && \
-    pip install --no-cache-dir opencv-contrib-python==4.8.1.78
+    controlnet-aux==0.0.7 \
+    insightface==0.7.3 \
+    face-recognition==1.3.0
 
 # ComfyUI stage
 FROM dependencies AS comfyui
 
 WORKDIR /comfyui
 
-# Clone and setup ComfyUI with specific commit for reproducibility
+# Clone and setup ComfyUI
 ARG COMFYUI_COMMIT=HEAD
 RUN git clone https://github.com/comfyanonymous/ComfyUI /comfyui && \
     cd /comfyui && \
@@ -95,7 +92,7 @@ RUN git clone https://github.com/comfyanonymous/ComfyUI /comfyui && \
 # Production stage
 FROM comfyui AS production
 
-# Optional advanced packages (install with error tolerance)
+# Optional advanced packages
 RUN pip install --no-cache-dir \
     timm==0.9.12 \
     accelerate==0.25.0 \
