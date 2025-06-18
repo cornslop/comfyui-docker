@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail  # Added -u and -o pipefail for stricter error handling
+set -euo pipefail
 
 echo "🔧 Setting up ComfyUI workspace..."
 
@@ -47,31 +47,19 @@ for dir in input output models custom_nodes; do
   echo "🔗 Linked $dir to /workspace/$dir"
 done
 
-# Validate symlinks were created correctly
-for dir in input output models custom_nodes; do
-  if [ ! -L "$dir" ]; then
-    echo "❌ Failed to create symlink for $dir"
-    exit 1
-  fi
-done
+# Configure WAS Node Suite ffmpeg path
+find /workspace/comfyui/custom_nodes -name "was_suite_config.json" -exec \
+  sed -i 's|"ffmpeg_bin_path": ""|"ffmpeg_bin_path": "/usr/bin/ffmpeg"|g' {} \;
+echo "🎬 Configured ffmpeg path in WAS Node Suite config"
 
 # Install custom nodes
 if [ "${AUTO_INSTALL_NODES:-true}" = "true" ]; then
     echo "🔌 Installing custom nodes..."
     /scripts/install-nodes.sh || {
-        echo "⚠️  Custom node installation failed, continuing anyway..."
+        echo "⚠️ Custom node installation failed, continuing anyway..."
     }
 fi
 
-# Configure WAS Node Suite ffmpeg path automatically
-for config_file in \
-    "/workspace/comfyui/custom_nodes/was-node-suite-comfyui/was_suite_config.json" \
-    "/workspace/comfyui/custom_nodes/was-ns/was_suite_config.json"; do
-    if [ -f "$config_file" ]; then
-        sed -i 's|"ffmpeg_bin_path": ""|"ffmpeg_bin_path": "/usr/bin/ffmpeg"|g' "$config_file"
-        echo "🎬 Configured ffmpeg path in $config_file"
-    fi
-done
-
 echo "🚀 Launching ComfyUI from persistent storage..."
+cd /workspace/comfyui
 exec python -u main.py --listen "${COMFYUI_HOST:-0.0.0.0}" --port "${COMFYUI_PORT:-8188}"

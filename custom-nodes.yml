@@ -6,11 +6,11 @@ essential:
     url: "https://github.com/ltdrdata/ComfyUI-Manager.git"
     commit: "main"
     
-popular:
   - name: "ComfyUI_IPAdapter_plus"
     url: "https://github.com/cubiq/ComfyUI_IPAdapter_plus.git"
     commit: "main"
-    
+
+popular:
   - name: "was-node-suite-comfyui"
     url: "https://github.com/WASasquatch/was-node-suite-comfyui.git"
     commit: "main"
